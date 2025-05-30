@@ -36,7 +36,7 @@ https://weather-app-three-olive-95.vercel.app/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/weatherscope.git
+git clone https://github.com/Vishal-Bisht/WeatherScope.git
 cd weatherscope
 ```
 
