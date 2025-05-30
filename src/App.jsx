@@ -25,6 +25,7 @@ const App = () => {
   const [isDaytime, setIsDaytime] = useState(true);
   const [currentTime, setCurrentTime] = useState(null);
   const [timezone, setTimezone] = useState('');
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Determine if it's the initial landing page
   const isLandingPage = !weatherData && !loading && !error;
@@ -57,6 +58,7 @@ const App = () => {
     try {
       setLoading(true);
       setError('');
+      setIsTransitioning(true);
 
       // Get coordinates for the city
       console.log('Fetching coordinates for:', city);
@@ -121,6 +123,10 @@ const App = () => {
         }
       }
 
+      // Set isDaytime based on API response immediately
+      setIsDaytime(current.is_day === 1);
+      
+      // Set all the data at once to prevent flashing
       setWeatherData({
         current: {
           temperature: current.temperature_2m,
@@ -161,9 +167,12 @@ const App = () => {
           sunshineDuration: daily.sunshine_duration[0]
         }
       });
-      setIsDaytime(current.is_day === 1);
-      setError(''); // Clear any previous errors
-      
+
+      // Short delay to ensure smooth transition
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 300);
+
       // Set timezone from the API response
       setTimezone(weatherResponse.data.timezone);
       
@@ -181,6 +190,7 @@ const App = () => {
       setWeatherData(null);
       setBackgroundImage('');
       setImageAuthor(null);
+      setIsTransitioning(false);
     } finally {
       setLoading(false);
     }
@@ -191,29 +201,26 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen relative bg-fixed"
+    <div className="min-h-screen relative bg-fixed transition-colors duration-500"
       style={{
         backgroundColor: isLandingPage ? '#1e293b' : (isDaytime ? '#0EA5E9' : '#0F172A')
       }}
     >
       {/* Background Gradients */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {isLandingPage ? (
-          <>
-            <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-purple-500/20 blur-3xl opacity-30 animate-pulse"></div>
-            <div className="absolute top-1/2 -right-48 w-96 h-96 rounded-full bg-blue-500/20 blur-3xl opacity-20 animate-pulse"></div>
-            <div className="absolute bottom-0 left-1/3 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl opacity-20 animate-pulse"></div>
-          </>
-        ) : (
-          <>
-            <div className={`absolute -top-24 -left-24 w-96 h-96 rounded-full ${
-              isDaytime ? 'bg-sky-400' : 'bg-indigo-900'
-            } blur-3xl opacity-30 animate-pulse`}></div>
-            <div className={`absolute top-1/2 -right-48 w-96 h-96 rounded-full ${
-              isDaytime ? 'bg-blue-400' : 'bg-purple-900'
-            } blur-3xl opacity-20 animate-pulse`}></div>
-          </>
-        )}
+        <div className={`transition-opacity duration-500 ${isLandingPage ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-purple-500/20 blur-3xl opacity-30 animate-pulse"></div>
+          <div className="absolute top-1/2 -right-48 w-96 h-96 rounded-full bg-blue-500/20 blur-3xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-0 left-1/3 w-96 h-96 rounded-full bg-indigo-500/20 blur-3xl opacity-20 animate-pulse"></div>
+        </div>
+        <div className={`transition-opacity duration-500 ${!isLandingPage ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`absolute -top-24 -left-24 w-96 h-96 rounded-full ${
+            isDaytime ? 'bg-sky-400' : 'bg-indigo-900'
+          } blur-3xl opacity-30 animate-pulse`}></div>
+          <div className={`absolute top-1/2 -right-48 w-96 h-96 rounded-full ${
+            isDaytime ? 'bg-blue-400' : 'bg-purple-900'
+          } blur-3xl opacity-20 animate-pulse`}></div>
+        </div>
       </div>
 
       {/* Background Image */}
@@ -237,7 +244,7 @@ const App = () => {
       {/* Main Content */}
       <div className="relative z-10">
         {isLandingPage ? (
-          <div className="container mx-auto px-4 min-h-screen flex flex-col items-center justify-center">
+          <div className={`container mx-auto px-4 min-h-screen flex flex-col items-center justify-center transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
             <div className="text-center space-y-6 max-w-2xl mx-auto">
               {/* Landing Page Content */}
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
@@ -247,15 +254,15 @@ const App = () => {
                 Discover real-time weather conditions for any location worldwide with beautiful visualizations and detailed forecasts.
               </p>
               
-              {/* Search Bar with larger styling */}
-              <div className="w-full max-w-md mx-auto transform hover:scale-105 transition-transform duration-300">
+              {/* Search Bar with larger styling and higher z-index */}
+              <div className="w-full max-w-md mx-auto transform hover:scale-105 transition-transform duration-300 relative z-50">
                 <div className="p-2 rounded-2xl bg-white/10 backdrop-blur-lg shadow-lg border border-white/10">
                   <SearchBar onSearch={handleSearch} />
                 </div>
               </div>
               
               {/* Features List */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-12 text-left">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-12 text-left relative z-10">
                 <div className="p-4 rounded-xl bg-white/5 backdrop-blur-md border border-white/10">
                   <WiDaySunny className="text-3xl text-yellow-400 mb-2" />
                   <h3 className="text-lg font-semibold text-white mb-1">Real-Time Weather</h3>
@@ -280,7 +287,7 @@ const App = () => {
             </div>
           </div>
         ) : (
-          <>
+          <div className={`transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
             {/* App Title */}
             <div className="absolute top-4 left-4 sm:left-8">
               <h1 className={`text-2xl sm:text-3xl font-bold ${
@@ -290,8 +297,8 @@ const App = () => {
               </h1>
             </div>
 
-            {/* Top Section */}
-            <div className="container mx-auto px-4 pt-8">
+            {/* Top Section with higher z-index for search */}
+            <div className="container mx-auto px-4 pt-8 relative z-50">
               <div className="flex flex-col items-center">
                 {/* Sun/Moon Icon */}
                 <div className="mb-8 relative">
@@ -361,7 +368,7 @@ const App = () => {
                 </div>
               </div>
             )}
-          </>
+          </div>
         )}
 
         {/* Unsplash Attribution */}
