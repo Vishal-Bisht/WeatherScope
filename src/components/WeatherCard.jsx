@@ -84,40 +84,49 @@ const DetailCard = ({ icon: Icon, value, label, animation }) => {
   // Get theme colors based on icon type
   const getIconTheme = () => {
     if (Icon === WiHumidity || Icon === BsDropletHalf) return {
-      icon: 'text-blue-400',
-      glow: 'from-blue-400/30 to-cyan-300/20'
+      icon: 'text-blue-700',
+      glow: 'from-blue-600/40 to-blue-500/30',
+      bg: 'bg-blue-600/10'
     };
     if (Icon === WiWind || Icon === WiCloudyGusts) return {
-      icon: 'text-teal-400',
-      glow: 'from-teal-400/30 to-emerald-300/20'
+      icon: 'text-emerald-700',
+      glow: 'from-emerald-600/40 to-emerald-500/30',
+      bg: 'bg-emerald-600/10'
     };
     if (Icon === WiBarometer) return {
-      icon: 'text-purple-400',
-      glow: 'from-purple-400/30 to-indigo-300/20'
+      icon: 'text-purple-500',
+      glow: 'from-purple-500/40 to-indigo-400/30',
+      bg: 'bg-purple-500/10'
     };
     if (Icon === WiRain || Icon === WiRaindrops) return {
-      icon: 'text-blue-500',
-      glow: 'from-blue-500/30 to-blue-400/20'
+      icon: 'text-blue-800',
+      glow: 'from-blue-700/40 to-blue-600/30',
+      bg: 'bg-blue-700/10'
     };
     if (Icon === WiCloudy) return {
-      icon: 'text-gray-400',
-      glow: 'from-gray-400/30 to-slate-300/20'
+      icon: 'text-slate-700',
+      glow: 'from-slate-600/40 to-slate-500/30',
+      bg: 'bg-slate-600/10'
     };
     if (Icon === BsSunFill || Icon === WiDaySunny || Icon === BsSunrise) return {
-      icon: 'text-yellow-400',
-      glow: 'from-yellow-400/30 to-amber-300/20'
+      icon: 'text-amber-500',
+      glow: 'from-amber-500/40 to-yellow-400/30',
+      bg: 'bg-amber-500/10'
     };
     if (Icon === BsEyeFill) return {
-      icon: 'text-indigo-400',
-      glow: 'from-indigo-400/30 to-indigo-300/20'
+      icon: 'text-indigo-700',
+      glow: 'from-indigo-600/40 to-indigo-500/30',
+      bg: 'bg-indigo-600/10'
     };
     if (Icon === WiThermometer || Icon === WiHot) return {
-      icon: 'text-red-400',
-      glow: 'from-red-400/30 to-orange-300/20'
+      icon: 'text-rose-500',
+      glow: 'from-rose-500/40 to-red-400/30',
+      bg: 'bg-rose-500/10'
     };
     return {
-      icon: 'text-sky-400',
-      glow: 'from-sky-400/30 to-blue-300/20'
+      icon: 'text-sky-700',
+      glow: 'from-sky-600/40 to-sky-500/30',
+      bg: 'bg-sky-600/10'
     };
   };
 
@@ -125,14 +134,14 @@ const DetailCard = ({ icon: Icon, value, label, animation }) => {
   const finalAnimation = Icon === BsSunFill ? "animate-rotate" : animation;
   
   return (
-    <div className="glass-effect rounded-xl p-4 transition-transform hover:scale-105 relative overflow-hidden">
+    <div className={`rounded-xl p-4 transition-all duration-300 hover:scale-105 relative overflow-hidden ${theme.bg} backdrop-blur-md border border-white/10`}>
       {/* Glow Effect Background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${theme.glow} opacity-60 blur-xl`}></div>
+      <div className={`absolute inset-0 bg-gradient-to-br ${theme.glow} opacity-70 blur-xl`}></div>
       
       {/* Content */}
       <div className="relative z-10">
         <div className="relative">
-          <div className={`absolute inset-0 ${theme.icon} blur-md opacity-50`}>
+          <div className={`absolute inset-0 ${theme.icon} blur-md opacity-60`}>
             <AnimatedIcon 
               icon={Icon}
               animation={finalAnimation}
@@ -143,11 +152,11 @@ const DetailCard = ({ icon: Icon, value, label, animation }) => {
             icon={Icon}
             animation={finalAnimation}
             size="medium"
-            colorClass={theme.icon}
+            colorClass={`${theme.icon} drop-shadow-lg`}
           />
         </div>
         <div className="mt-2">
-          <p className="text-lg font-semibold text-white">{value}</p>
+          <p className="text-lg font-semibold text-white/90 drop-shadow-md">{value}</p>
           <p className="text-sm text-white/70">{label}</p>
         </div>
       </div>
