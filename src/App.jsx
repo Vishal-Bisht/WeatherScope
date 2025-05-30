@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { WiDaySunny, WiNightClear, WiThermometer, WiTime1, WiSunrise } from 'react-icons/wi';
+import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import SearchBar from './components/SearchBar';
 import WeatherCard from './components/WeatherCard';
 
@@ -13,6 +14,46 @@ const AnimatedIcon = ({ icon: Icon, animation, size = 'base', colorClass = '' })
       ${colorClass}
     `} />
   </div>
+);
+
+// Add Footer component
+const Footer = ({ isDaytime }) => (
+  <footer className={`w-full py-6 px-4 backdrop-blur-md mt-12 border-t ${isDaytime ? 'border-white/10' : 'border-gray-800/30'}`}>
+    <div className="container mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="text-center md:text-left">
+          <h3 className={`text-xl font-semibold ${isDaytime ? 'text-white' : 'text-gray-200'}`}>WeatherScope</h3>
+          <p className={`text-sm ${isDaytime ? 'text-white/80' : 'text-gray-300'}`}>
+            Real-time weather data at your fingertips
+          </p>
+        </div>
+        
+        <div className="flex items-center space-x-6">
+          <a href="https://github.com/Vishal-Bisht" target="_blank" rel="noopener noreferrer" 
+             className={`text-2xl ${isDaytime ? 'text-white hover:text-gray-200' : 'text-gray-300 hover:text-white'} transition-colors duration-300`}>
+            <FaGithub />
+          </a>
+          <a href="https://www.linkedin.com/in/vishal-bist-4a5238261/" target="_blank" rel="noopener noreferrer"
+             className={`text-2xl ${isDaytime ? 'text-white hover:text-gray-200' : 'text-gray-300 hover:text-white'} transition-colors duration-300`}>
+            <FaLinkedin />
+          </a>
+          <a href="https://www.instagram.com/vishal_bisht000/" target="_blank" rel="noopener noreferrer"
+             className={`text-2xl ${isDaytime ? 'text-white hover:text-gray-200' : 'text-gray-300 hover:text-white'} transition-colors duration-300`}>
+            <FaInstagram />
+          </a>
+        </div>
+
+        <div className="text-center md:text-right">
+          <p className={`text-sm ${isDaytime ? 'text-white/80' : 'text-gray-300'}`}>
+            © {new Date().getFullYear()} WeatherScope - All rights reserved
+          </p>
+          <p className={`text-xs ${isDaytime ? 'text-white/60' : 'text-gray-400'}`}>
+            Powered by Open-Meteo API
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
 );
 
 const App = () => {
@@ -242,7 +283,7 @@ const App = () => {
       )}
 
       {/* Main Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col min-h-screen">
         {isLandingPage ? (
           <div className={`container mx-auto px-4 min-h-screen flex flex-col items-center justify-center transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
             <div className="text-center space-y-6 max-w-2xl mx-auto">
@@ -287,7 +328,7 @@ const App = () => {
             </div>
           </div>
         ) : (
-          <div className={`transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+          <div className={`flex-grow transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
             {/* App Title */}
             <div className="absolute top-4 left-4 sm:left-8">
               <h1 className={`text-2xl sm:text-3xl font-bold ${
@@ -370,6 +411,9 @@ const App = () => {
             )}
           </div>
         )}
+
+        {/* Footer */}
+        <Footer isDaytime={isDaytime} />
 
         {/* Unsplash Attribution */}
         {imageAuthor && (
