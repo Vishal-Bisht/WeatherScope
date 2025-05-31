@@ -20,8 +20,8 @@ https://weather-app-three-olive-95.vercel.app/
   - Wet Bulb Temperature
   - Sunshine Duration
   
+<!-- - **Location-Based Background**: Dynamic background images based on searched location (requires Unsplash API key) -->
 - **24-Hour Forecast**: Hourly weather predictions with temperature and wind speed
-- **Location-Based Background**: Dynamic background images based on searched location (requires Unsplash API key)
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 - **Smart Search**: Auto-complete location search with debouncing
 - **Beautiful UI Elements**:
