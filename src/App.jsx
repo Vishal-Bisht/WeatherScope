@@ -33,11 +33,11 @@ const Footer = ({ isDaytime }) => (
              className={`text-2xl ${isDaytime ? 'text-white hover:text-gray-200' : 'text-gray-300 hover:text-white'} transition-colors duration-300`}>
             <FaGithub />
           </a>
-          <a href="https://www.linkedin.com/in/vishal-bist-4a5238261/" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.linkedin.com/in/vishal-bisht-4a5238261/" target="_blank" rel="noopener noreferrer"
              className={`text-2xl ${isDaytime ? 'text-white hover:text-gray-200' : 'text-gray-300 hover:text-white'} transition-colors duration-300`}>
             <FaLinkedin />
           </a>
-          <a href="https://www.instagram.com/vishal_bisht000/" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.instagram.com/vishal_bisht001/" target="_blank" rel="noopener noreferrer"
              className={`text-2xl ${isDaytime ? 'text-white hover:text-gray-200' : 'text-gray-300 hover:text-white'} transition-colors duration-300`}>
             <FaInstagram />
           </a>
